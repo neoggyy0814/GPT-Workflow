@@ -1,0 +1,1039 @@
+# AI Workflow Framework v1.0
+## 框架指南（Framework Guide）
+
+Part 1：前言（Preface）
+Part 2：核心理念（Core Philosophy）
+Part 3：整體架構（Architecture）
+Part 4：核心元件（Core Components）
+Part 5：設計原則（Design Principles）
+Part 6：擴充指南（Extension Guide）
+Part 7：附錄（Appendix）
+
+---
+
+# Part 1　前言（Preface）
+
+## 一、什麼是 AI Workflow Framework？（What is AI Workflow Framework?）
+
+AI Workflow Framework 是一套用於設計 AI 工作流程（Workflow）的框架。
+
+它的目的不是讓 AI 回答更多問題，而是建立一套一致、可維護、可擴充的協作方式，使 AI 能與使用者共同完成任務。
+
+本框架並非針對特定 AI 模型設計，而是將 AI 工作過程抽象化，使其能套用於不同模型與不同任務。
+
+---
+
+## 二、為什麼需要這套框架？（Why This Framework Exists）
+
+隨著 AI 能力快速提升，許多工作已經可以交由 AI 協助完成。
+
+然而，在複雜或長期的任務中，僅依靠單一 Prompt 往往會遇到以下問題：
+
+- 需求容易遺漏。
+- 專案逐漸失去一致性。
+- 每次修改都需要重新描述大量背景。
+- 不同任務缺乏一致的工作方式。
+- 成果品質依賴當下 Prompt，而難以重複利用。
+
+這些問題並非 AI 能力不足，而是缺乏一套穩定的工作流程。
+
+因此，本框架將焦點放在 Workflow，而非 Prompt。
+
+---
+
+## 三、本框架的核心目標（Core Objectives）
+
+AI Workflow Framework 的核心目標包括：
+
+- 建立一致的工作流程（Consistent Workflow）。
+- 建立可重複使用的規格（Reusable Specification）。
+- 降低使用者整理需求的負擔。
+- 提高成果的一致性與可維護性。
+- 支援不同任務與不同工作模式。
+- 支援持續修改與版本迭代。
+
+本框架重視的是整個工作生命週期，而非單次生成結果。
+
+---
+
+## 四、本框架不是什麼？（What This Framework Is NOT）
+
+本框架不是：
+
+- Prompt 範本。
+- 提示詞大全。
+- 特定模型的最佳化技巧。
+- 強制所有任務遵循固定流程。
+- 限制 AI 回答方式的規則集合。
+
+本框架並不取代使用者思考，而是協助使用者將想法逐步整理成可執行的規格。
+
+---
+
+## 五、設計理念（Design Philosophy）
+
+本框架建立於以下理念：
+
+- AI 的價值不只是回答問題，而是協助完成工作。
+- 良好的 Workflow 比單一 Prompt 更容易維持大型任務。
+- 規格（Specification）應獨立於工作流程（Workflow）。
+- 工作模式（Mode）應只描述任務特有流程，而非重新定義共通規則。
+- 共通規則應集中管理，以降低重複與維護成本。
+- 修改成果時，應優先更新規格，再更新成果。
+
+本框架希望建立的是一套可以持續演進的工作方式，而非一次性的提示詞。
+
+---
+
+## 六、適用對象（Target Audience）
+
+本框架適合：
+
+- 希望建立固定 AI 工作流程的使用者。
+- 長期使用 AI 協助專案的人員。
+- 希望提升 AI 協作品質的開發者。
+- 希望設計自訂 GPT 或 AI 助理的設計者。
+- 希望理解 AI 工作流程設計理念的學習者。
+
+不論使用何種 AI 模型，只要需要協助完成複雜任務，本框架皆可作為設計工作流程的參考。
+
+---
+
+## 七、如何閱讀本指南？（How to Read This Guide）
+
+建議依照以下順序閱讀：
+
+1. 前言（Preface）
+2. 核心理念（Core Philosophy）
+3. 整體架構（Architecture）
+4. 核心元件（Core Components）
+5. 設計原則（Design Principles）
+6. 擴充指南（Extension Guide）
+7. 附錄（Appendix）
+
+若目的是實際使用 Framework，可搭配 Runtime Edition 一同閱讀。
+
+Framework Guide 負責說明設計理念與架構；Runtime Edition 則為 AI 實際執行時所使用的規格。
+
+---
+
+# Part 2　核心理念（Core Philosophy）
+
+## 一、從 Prompt 到 Workflow（From Prompt to Workflow）
+
+AI 的能力快速提升，使許多工作都能透過自然語言完成。然而，當任務逐漸複雜時，單一 Prompt 往往無法穩定支援整個工作流程。
+
+原因並非 Prompt 不夠完整，而是大型任務通常包含多個階段，每個階段需要的資訊、目標與限制皆不同。
+
+因此，本框架將重點由 Prompt 轉移至 Workflow，希望建立一套可持續運作的工作方式，而非依賴單次提示詞。
+
+---
+
+## 二、Context 比 Prompt 更重要（Context over Prompt）
+
+Prompt 決定 AI 在當下如何回應。
+
+Context 則決定 AI 如何理解整個任務。
+
+在長期專案中，真正影響成果品質的通常不是某一句 Prompt，而是整體 Context 是否一致。
+
+因此，本框架將 Workflow、Specification、Mode 與 Routing 視為 Context 的不同層次，共同維持 AI 對任務的整體理解。
+
+---
+
+## 三、先建立規格，再產生成果（Specification before Output）
+
+許多 AI 工作流程會直接要求生成成果。
+
+本框架採取不同策略：
+
+先建立 Specification，再開始 Output。
+
+Specification 是 AI 與使用者共同確認需求的媒介，也是後續修改、擴充與版本管理的基礎。
+
+當規格穩定後，成果便能持續更新，而不需要每次重新描述整個需求。
+
+---
+
+## 四、工作流程應獨立於資料模型（Separate Workflow from Specification）
+
+Workflow 描述的是工作如何進行。
+
+Specification 描述的是完成工作需要哪些資訊。
+
+兩者雖然互相關聯，但負責不同職責。
+
+將兩者分離，可以避免資料模型受到工作流程限制，也能讓同一份 Specification 被不同 Mode 重複利用。
+
+---
+
+## 五、Mode 是特殊流程，而不是特殊規則（Mode Defines Workflow, Not Rules）
+
+Mode 的目的，是描述特定任務的工作方式。
+
+例如：
+
+- Image Mode
+- Video Mode
+- Programming Mode
+
+Mode 不應重新定義 Workflow，也不應重新建立共通 Specification。
+
+Mode 應專注於任務特有流程，其餘規則則引用既有 Framework。
+
+如此可降低重複、提高一致性，並提升維護效率。
+
+---
+
+## 六、共通規則集中管理（Centralized Common Rules）
+
+大型 Framework 容易因功能增加而出現重複規則。
+
+本框架採用集中管理方式：
+
+共通流程由 Workflow 管理。
+
+任務選擇由 Routing 管理。
+
+資料模型由 Specification 管理。
+
+特殊流程由 Mode 管理。
+
+各模組只負責自己的職責，不重新定義其他模組內容。
+
+---
+
+## 七、修改規格，而不是重做成果（Revise Specification First）
+
+修改需求時，應優先修改 Specification。
+
+成果應視為 Specification 的實作結果，而非唯一目標。
+
+如此可降低重工成本，也能維持不同版本間的一致性。
+
+本框架因此採用 Incremental Update（增量更新）策略，而非每次重新建立完整內容。
+
+---
+
+## 八、Framework 的目的（Purpose of the Framework）
+
+AI Workflow Framework 的目的，不是建立更多規則。
+
+而是透過合理分工，使 Workflow、Specification、Routing 與 Mode 能各自負責不同職責。
+
+當各模組保持低耦合（Low Coupling）與單一職責（Single Responsibility）時，整個 Framework 才能持續擴充，而不因規模增加而失去一致性。
+
+本框架希望建立的是一套可以長期演進的工作方式，而非一次性的 Prompt 技巧。
+
+---
+
+# Part 3　整體架構（Architecture）
+
+## 一、架構設計理念（Architecture Overview）
+
+AI Workflow Framework 採用模組化（Modular）架構。
+
+整體 Framework 並非由單一 Prompt 組成，而是由多個職責明確的元件共同完成一項工作。
+
+每個元件只負責一項核心職責（Single Responsibility），彼此合作完成完整工作流程。
+
+此設計可降低不同功能之間的耦合，提高 Framework 的可維護性、可擴充性與一致性。
+
+---
+
+## 二、整體架構（Framework Architecture）
+
+AI Workflow Framework 由四個核心元件組成：
+
+Workflow（工作流程）
+
+↓
+
+Knowledge Routing（知識路由）
+
+↓
+
+Specification（規格）
+
+↓
+
+Mode（工作模式）
+
+四者共同組成 Framework 的運作核心。
+
+它們彼此合作，但各自負責不同職責。
+
+---
+
+## 三、Workflow（工作流程）
+
+Workflow 定義工作的生命週期。
+
+它回答的是：
+
+> **現在應該做到哪一步？**
+
+Workflow 不關心任務內容。
+
+它只負責描述工作如何推進。
+
+預設流程為：
+
+Idea（想法）
+
+↓
+
+Requirement（需求）
+
+↓
+
+Specification（規格）
+
+↓
+
+Output（成果）
+
+↓
+
+Revision（修改）
+
+所有工作模式皆遵循此生命週期。
+
+Workflow 本身不描述任何特定任務。
+
+---
+
+## 四、Knowledge Routing（知識路由）
+
+Knowledge Routing 負責判斷：
+
+> **現在應該使用哪些能力完成工作？**
+
+Routing 不負責工作內容。
+
+也不負責工作流程。
+
+它只負責：
+
+- 判斷任務類型。
+- 選擇工作模式。
+- 選擇需要引用的 Specification。
+- 安排各 Mode 的執行順序。
+
+因此，Routing 可以視為 Framework 的 Dispatcher（派工器）。
+
+---
+
+## 五、Specification（規格）
+
+Specification 定義完成工作所需要的資訊。
+
+它回答的是：
+
+> **完成這項工作，需要知道哪些資訊？**
+
+Specification 不描述：
+
+如何完成工作。
+
+而是描述：
+
+工作需要哪些資料。
+
+例如：
+
+Image Specification 會定義：
+
+- Subject
+- Composition
+- Lighting
+- Material
+- Color
+- Camera
+- Narrative
+
+未來亦可建立：
+
+- Project Specification
+- Programming Specification
+- Writing Specification
+
+不同 Mode 可以共用同一份 Specification。
+
+---
+
+## 六、Mode（工作模式）
+
+Mode 定義特定任務的工作方式。
+
+它回答的是：
+
+> **這種類型的工作，應該如何進行？**
+
+Mode 不重新定義 Workflow。
+
+也不重新建立 Specification。
+
+Mode 的工作是：
+
+引用 Framework 已有能力，
+
+再補充任務特有流程。
+
+例如：
+
+Image Mode：
+
+增加圖片生成流程。
+
+Video Mode：
+
+增加影片生成流程。
+
+Programming Mode：
+
+增加程式開發流程。
+
+因此，新增 Mode 並不代表重新建立一套 Framework。
+
+---
+
+## 七、元件關係（Component Relationships）
+
+四個核心元件彼此合作，但維持獨立。
+
+Workflow
+
+負責時間。
+
+Routing
+
+負責選擇。
+
+Specification
+
+負責資訊。
+
+Mode
+
+負責執行。
+
+每個元件皆回答不同問題。
+
+因此能降低重複規則，避免不同功能互相影響。
+
+---
+
+## 八、為什麼採用分層架構？（Why Layered Architecture?）
+
+若將所有規則寫入同一份 Prompt，
+
+隨著功能增加，
+
+不同規則容易互相干擾，
+
+也難以維護。
+
+因此，本 Framework 採用分層設計。
+
+讓每個元件各自負責一項核心職責。
+
+當需要新增功能時，
+
+通常只需新增新的 Mode 或 Specification，
+
+而不需修改整體架構。
+
+這使 Framework 能持續擴充，同時保持一致性與可維護性。
+
+---
+
+# Part 4　核心元件（Core Components）
+
+## 一、核心元件的設計原則（Design Principles of Components）
+
+AI Workflow Framework 將整體工作拆分為多個核心元件。
+
+目的並非增加複雜度，而是讓每個元件只負責解決一項明確問題。
+
+每增加一層抽象，都必須解決一個實際問題。
+
+若某個元件無法回答「它解決了什麼問題」，則不應存在於 Framework 中。
+
+因此，每個元件皆遵循：
+
+- 單一職責（Single Responsibility）
+- 低耦合（Low Coupling）
+- 可重複使用（Reusability）
+- 易於維護（Maintainability）
+
+---
+
+## 二、Workflow（工作流程）
+
+### 解決的問題（Problem）
+
+使用者與 AI 容易在不同階段進行不同層次的討論。
+
+若沒有共同流程，AI 可能直接產生成果，而忽略需求尚未成熟；也可能在需求已完整時，仍反覆詢問不必要的問題。
+
+### 核心職責（Responsibility）
+
+Workflow 負責定義工作的生命週期。
+
+它回答：
+
+> 現在應該做到哪一步？
+
+Workflow 不負責任務內容，也不負責資料內容。
+
+它只負責工作如何推進。
+
+---
+
+## 三、Knowledge Routing（知識路由）
+
+### 解決的問題（Problem）
+
+不同任務需要不同能力。
+
+若所有規則同時作用，AI 容易混合不同工作方式，造成流程混亂與規則衝突。
+
+### 核心職責（Responsibility）
+
+Knowledge Routing 負責判斷：
+
+- 任務類型。
+- 需要哪些 Mode。
+- 需要哪些 Specification。
+- 工作順序。
+
+Routing 不產生成果。
+
+也不定義流程。
+
+它只負責選擇。
+
+因此可視為 Framework 的 Dispatcher（派工器）。
+
+---
+
+## 四、Specification（規格）
+
+### 解決的問題（Problem）
+
+需求通常分散於多次對話。
+
+若沒有共同規格，每次修改都需要重新整理背景，也容易造成需求遺失。
+
+### 核心職責（Responsibility）
+
+Specification 定義完成任務所需資訊。
+
+它回答：
+
+> AI 需要知道哪些資訊？
+
+Specification 不描述工作方式。
+
+也不描述執行流程。
+
+它只建立共同資料模型，使不同 Mode 能共用同一份資訊。
+
+---
+
+## 五、Mode（工作模式）
+
+### 解決的問題（Problem）
+
+不同任務具有不同工作流程。
+
+若所有任務共用完全相同流程，將無法兼顧圖片、影片、程式設計等不同需求。
+
+### 核心職責（Responsibility）
+
+Mode 定義任務特有流程。
+
+它引用 Workflow、Routing 與 Specification。
+
+僅補充該任務所需的特殊工作方式。
+
+Mode 不重新建立 Framework。
+
+而是在既有 Framework 上擴充能力。
+
+---
+
+## 六、四個元件如何合作（Component Collaboration）
+
+四個核心元件並非上下階層，而是彼此合作。
+
+Workflow 提供工作流程。
+
+Knowledge Routing 選擇工作方式。
+
+Specification 提供共同資訊。
+
+Mode 提供任務特有流程。
+
+共同完成一次完整工作。
+
+因此，新增一個 Mode，通常不需要修改 Workflow；新增一份 Specification，也不需要修改既有 Mode。
+
+Framework 能持續擴充，正是因為各元件維持清楚的職責邊界。
+
+---
+
+## 七、為什麼不是一個大型 Prompt？（Why Not One Huge Prompt?）
+
+將所有規則集中於單一 Prompt，看似簡單，但隨著功能增加，規則容易互相影響，也難以維護。
+
+本 Framework 將不同層面的 Context 分離管理。
+
+每個元件只負責一部分 Context。
+
+如此不僅降低重複，也使 Framework 更容易理解、修改與擴充。
+
+Framework 並不是把 AI 拆成不同能力，而是把 AI 理解任務所需要的 Context 拆成不同層次。
+
+透過 Context 的分層管理，即使只有一個 AI，也能維持大型專案所需要的一致性與可維護性。
+
+---
+
+# Part 5　設計原則（Design Principles）
+
+## 一、設計原則的目的（Purpose of Design Principles）
+
+AI Workflow Framework 的設計原則，不是限制 Framework 的發展，而是提供一致的設計方向。
+
+當需要新增元件、修改架構或擴充功能時，應優先遵循這些原則，而非追求局部最佳化。
+
+設計原則的目的，是維持 Framework 長期的一致性、可維護性與可擴充性。
+
+---
+
+## 二、單一職責（Single Responsibility）
+
+每個元件只負責一項核心工作。
+
+Workflow 管理流程。
+
+Routing 管理選擇。
+
+Specification 管理資料。
+
+Mode 管理任務特有流程。
+
+若一個元件開始負責多項工作，應重新評估是否需要拆分。
+
+---
+
+## 三、低耦合（Low Coupling）
+
+各元件應保持獨立。
+
+修改某一元件時，應盡量避免影響其他元件。
+
+新增功能時，優先新增新的 Mode 或 Specification，而非修改既有架構。
+
+---
+
+## 四、不重複原則（Don't Repeat Yourself, DRY）
+
+相同規則只定義一次。
+
+共通規則集中管理。
+
+其他元件應引用，而非重新描述。
+
+若同一規則出現在多個地方，應重新思考其職責歸屬。
+
+---
+
+## 五、增量更新（Incremental Update）
+
+修改需求時，優先修改既有 Specification。
+
+避免重新建立整份規格。
+
+成果應隨 Specification 更新，而非重新開始。
+
+---
+
+## 六、先規格，後成果（Specification before Output）
+
+Specification 是成果的基礎。
+
+需求確認後，應先建立 Specification，再開始產生成果。
+
+當 Specification 穩定時，成果才能持續修改與維護。
+
+---
+
+## 七、Context Engineering（上下文工程）
+
+本 Framework 重視 Context，而非單一 Prompt。
+
+Workflow、Routing、Specification 與 Mode 共同組成 AI 理解任務的 Context。
+
+透過 Context 的分層管理，提高大型任務的一致性與穩定性。
+
+---
+
+## 八、抽象化（Abstraction）
+
+抽象化的目的，是將共同問題集中管理。
+
+抽象不應只是增加一層結構。
+
+每一層抽象，都必須解決一個實際問題。
+
+若新的抽象無法說明它解決了什麼問題，則不應建立。
+
+---
+
+## 九、最小必要結構（Minimal Necessary Structure）
+
+Framework 不追求一次建立完整架構。
+
+新的元件，應建立於實際需求之上。
+
+只有當相同問題反覆出現，且現有架構無法有效處理時，才考慮新增新的抽象層。
+
+保持 Framework 簡潔，比過度設計更重要。
+
+---
+
+## 十、可演進性（Evolution over Perfection）
+
+Framework 並非一次完成。
+
+新的工作模式、新的 Specification 與新的設計原則，都可能隨著使用經驗持續演進。
+
+應優先保持架構一致，而非追求一次完成所有設計。
+
+Framework 的目標不是完美，而是能持續成長。
+
+---
+
+# Part 6　擴充指南（Extension Guide）
+
+## 一、擴充的目的（Purpose of Extension）
+
+AI Workflow Framework 採用可持續演進（Evolutionary）的設計。
+
+擴充 Framework 的目的，不是增加更多功能，而是在保持整體一致性的前提下，解決新的問題。
+
+新增任何元件前，應先確認現有 Framework 是否已能處理該需求。
+
+若現有架構足以解決問題，不應增加新的抽象層。
+
+---
+
+## 二、何時新增 Mode？（When to Create a New Mode）
+
+當不同任務具有明顯不同的工作流程時，可考慮建立新的 Mode。
+
+例如：
+
+- Image Mode
+- Video Mode
+- Programming Mode
+- Writing Mode
+
+若只是相同流程下的不同應用情境，通常不需要建立新的 Mode。
+
+Mode 的目的是定義工作流程，而不是分類所有任務。
+
+---
+
+## 三、何時新增 Specification？（When to Create a New Specification）
+
+當多個 Mode 持續使用相同資訊模型時，可將共同資料抽離成新的 Specification。
+
+Specification 應描述：
+
+完成工作需要哪些資訊。
+
+而不是：
+
+如何完成工作。
+
+若僅供單一 Mode 使用，通常不需要建立新的 Specification。
+
+---
+
+## 四、何時修改 Workflow？（When to Modify Workflow）
+
+Workflow 屬於 Framework 的核心。
+
+修改 Workflow 前，應確認：
+
+問題是否為所有 Mode 共通存在。
+
+若僅影響單一 Mode，應優先修改 Mode，而非 Workflow。
+
+Workflow 應保持穩定。
+
+避免因個別需求頻繁修改。
+
+---
+
+## 五、何時修改 Knowledge Routing？（When to Modify Knowledge Routing）
+
+Knowledge Routing 負責任務選擇。
+
+僅當：
+
+Framework 增加新的工作方式、
+
+新的 Mode、
+
+或新的工作順序時，
+
+才應修改 Routing。
+
+不得將 Mode 的內容加入 Routing。
+
+---
+
+## 六、何時建立新的抽象？（When to Introduce a New Abstraction）
+
+新的抽象層，應符合以下條件：
+
+- 已出現重複問題。
+- 現有架構無法有效管理。
+- 能解決明確問題。
+- 能降低整體複雜度。
+
+若只是為了增加一致性而增加抽象，應重新評估是否真的必要。
+
+抽象的目的，是降低複雜度，而不是增加架構。
+
+---
+
+## 七、如何保持向下相容？（Backward Compatibility）
+
+新增功能時：
+
+應優先保持既有 Workflow、Specification 與 Mode 的相容性。
+
+若需修改既有元件，
+
+應優先採用 Incremental Update。
+
+避免重新建立整體架構。
+
+既有工作流程不應因新功能而失效。
+
+---
+
+## 八、Framework 的演進方式（Framework Evolution）
+
+Framework 並非一次完成。
+
+每次修改，都應遵循：
+
+問題
+
+↓
+
+分析
+
+↓
+
+抽象
+
+↓
+
+整合
+
+↓
+
+驗證
+
+↓
+
+迭代
+
+新增元件之前，
+
+應先確認：
+
+是否已有元件可以解決相同問題。
+
+Framework 的成長，
+
+應建立於實際使用經驗，
+
+而非預測未來所有需求。
+
+---
+
+## 九、擴充 Checklist（Extension Checklist）
+
+新增任何元件前，建議依序確認：
+
+- 是否真正解決新的問題？
+- 是否與既有元件重複？
+- 是否符合單一職責？
+- 是否降低整體複雜度？
+- 是否保持低耦合？
+- 是否容易維護？
+- 是否需要新的抽象層？
+- 是否能保持向下相容？
+
+若以上問題無法明確回答，
+
+建議優先修改既有 Framework，而非新增元件。
+
+---
+
+# Part 7　附錄（Appendix）
+
+## 一、Framework 文件架構（Framework Documentation）
+
+AI Workflow Framework 由兩種類型的文件組成：
+
+### Runtime Edition（執行版）
+
+提供 AI 執行時所需規則。
+
+特色：
+
+- 精簡。
+- 可直接執行。
+- 不包含設計理念。
+- 不包含教學內容。
+
+主要用途：
+
+提供 AI 作為工作流程規格。
+
+---
+
+### Framework Guide（框架指南）
+
+提供 Framework 的設計理念與架構說明。
+
+特色：
+
+- 解釋設計原因。
+- 說明架構思想。
+- 記錄設計決策。
+- 提供擴充方法。
+
+主要用途：
+
+協助 Framework 的理解、維護與演進。
+
+---
+
+## 二、文件索引（Document Index）
+
+目前 Framework 包含：
+
+### 核心文件（Core）
+
+- 工作流 GPT 規格書（AI Workflow Framework） Runtime Edition
+- 框架指南（Framework Guide）
+
+---
+
+### Workflow（工作流程）
+
+- Workflow（內建於 Runtime）
+
+---
+
+### Routing（知識路由）
+
+- Knowledge Routing
+
+---
+
+### Specifications（規格）
+
+- Media Specification
+
+未來可擴充：
+
+- Project Specification
+- Programming Specification
+- Writing Specification
+
+---
+
+### Modes（工作模式）
+
+目前：
+
+- Image Mode
+- Video Mode
+- General Project Mode
+
+未來可擴充：
+
+- Programming Mode
+- Writing Mode
+- Research Mode
+- Planning Mode
+
+---
+
+## 三、設計演進（Design Evolution）
+
+AI Workflow Framework 並非事先設計完成。
+
+而是在持續解決問題的過程中逐步形成。
+
+最初的需求，只是希望改善圖片生成工作流程。
+
+隨著圖片與影片模式逐漸增加，共同流程開始重複，因此逐步抽離 Workflow。
+
+當不同工作模式需要共用資訊時，又抽離出 Specification。
+
+最後，再建立 Routing，負責不同工作模式之間的協調。
+
+Framework 並不是一次完成，而是在不斷重構（Refactoring）與抽象化（Abstraction）的過程中自然演進。
+
+因此，Framework 的成長方式不是預先設計所有功能，而是在每一次遇到真正的問題後，再建立最小必要結構。
+
+---
+
+## 四、未來發展方向（Future Evolution）
+
+Framework 將持續依據實際使用經驗進行演進。
+
+未來可能包含：
+
+- 新的 Specification。
+- 新的工作模式。
+- 新的工作流程。
+- 新的設計原則。
+
+新增任何元件之前，皆應確認：
+
+它是否真正解決新的問題。
+
+而不是僅增加 Framework 的複雜度。
+
+Framework 的目標不是功能最多，而是維持一致、可維護且容易理解。
+
+---
+
+## 五、結語（Closing）
+
+AI Workflow Framework 並不是一套 Prompt，也不是特定 AI 的操作技巧。
+
+它是一套協助人與 AI 共同工作的設計框架。
+
+Framework 的目的，不是限制 AI，而是建立一套能長期維護、持續擴充且保持一致性的工作方式。
+
+AI Workflow Framework 並不是為了讓 AI 更聰明。
+
+而是讓 AI 與使用者能以一致、可維護、可擴充的方式共同完成工作。
+
+當 Workflow、Routing、Specification 與 Mode 各自負責自己的職責時，Framework 便能持續演進，而不因規模增加失去一致性。
+
+希望這套 Framework 不只是解決目前的問題，也能成為未來設計 AI 工作流程時，一個值得持續發展的起點。
