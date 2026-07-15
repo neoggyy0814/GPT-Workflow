@@ -1,0 +1,46 @@
+# CLAUDE.md
+
+<!-- How to use: copy this file to your project as CLAUDE.md, fill every [bracketed] blank, delete
+     every HTML comment (including this one). This file is a router, not an encyclopedia — any new
+     rule longer than ~10 lines belongs in a new file under ops/, with just one routing line added here.
+     Target length: under 60 lines. If you're over, something needs to move out. -->
+
+## What this project is
+
+[One sentence: what this project does, who it's for]
+[One sentence: current phase and the single most important goal right now]
+
+## Hard rules (apply to every session and every subagent, no exceptions)
+
+1. **The dispatcher doesn't do fieldwork**: large reads (>50 lines of raw content), repo-wide scans, web research, batch file edits — always delegate to a subagent. The main conversation only receives conclusions and `file:line` references. See `ops/10-dispatch.md`.
+2. **Back up before editing any existing file that matters**: `cp <file> <file>.bak-$(date +%Y%m%d)`. New content goes in a new file rather than overwriting silently.
+3. **Verify, don't self-verify**: before declaring anything "done," you need fresh-context sign-off or run-it-and-see evidence. Criteria: `ops/20-judgment.md` R2.
+4. **Cap retries at two rounds for the same problem**: the third attempt must change method, escalate the model, or ask the requester.
+5. **When unsure, check; when you can't check, say so**: never guess a tool name, a path, a model id, or an API parameter from memory.
+6. [Project-specific hard rule — e.g.: never push directly to the main branch / never touch production config / the test command is `xxx`]
+
+## Routing table (read the matching file before doing this kind of thing)
+
+| Situation | Read this |
+|---|---|
+| Handling any non-trivial instruction | `ops/00-command-loop.md` — the entry point; start here |
+| Dispatching to a subagent, choosing a model or effort level | `ops/10-dispatch.md` |
+| Stuck on "should I escalate / is this actually done / should I ask / is this the wrong approach" | `ops/20-judgment.md` |
+| Writing a dispatch prompt (search / build / refactor / research / review) | `ops/30-templates.md` — copy a template directly |
+| About to change anything under `ops/`, or just hit a pitfall worth recording | `ops/40-maintenance.md` |
+| Suspecting token bloat, lost focus, or a recurring mistake | `ops/50-diagnosis.md` |
+| First session in this environment, or want the backstory and traps in one read | `ops/60-letter.md` |
+| Checking history before starting work (grep relevant keywords first) | `ops/lessons.md` |
+
+## Project commands
+
+<!-- Only the high-frequency, easy-to-forget ones. Long explanations go in ops/ or docs/; one line each here. -->
+- Build: [command]
+- Test: [command]
+- [other]
+
+## Environment facts (fill in after your first real session, never from memory)
+
+- Available model ids: [fill in]
+- Subagent/dispatch mechanism: [fill in]
+- Installed MCP servers / skills / tools: [fill in]

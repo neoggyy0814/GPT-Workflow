@@ -1,0 +1,20 @@
+指令句 vs 資料句(Imperative vs Declarative Phrasing)
+自我報告不可採信(Unreliable Self-Report)
+單一事實來源 / DRY
+機制限制 vs 撰寫問題
+從屬聲明(Subordination Clause)
+
+
+Anthropic 憲法層 > Project 指示 > userPreferences/userStyle > 記憶 > 當次對話訊息
+
+會確實生效的至少有三塊:個人偏好指示(userPreferences)、風格(userStyle)、以及若你開 Project 的話,Project 指示與 Project 知識庫。
+
+(A)我能確認的部分
+
+userStyle(使用者風格)與 userPreferences(使用者偏好)衝突時,以 userStyle 為準。 這是我的指示裡明文寫的規則,不是推論。
+當你在對話中明確給出新指示、且與你先前設定的 userPreferences 不同時,以你當次訊息為準。 這也是明文規則——也就是說,「當次對話訊息」不是排在階層最底層被動接受上層覆蓋,而是在與 userPreferences 衝突時反而優先,因為它代表你最新的意圖。
+Anthropic 對我的行為規範(安全、誠實、拒答界線等)永遠是最上層,不會被 userStyle、userPreferences、Project 指示、或你的當次訊息覆蓋。 這條是絕對的,不是「權重較高」而是「不可被覆蓋」,性質上和你其他層之間的關係不同——不是同一種排序邏輯。
+
+
+CLAUDE.md
+官方刻意設計成「Personal Instruction(習慣、慣例)+ 部分 Custom GPT 定位 + 部分 Workflow(建置指令)」的混合體
